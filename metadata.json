@@ -1,0 +1,22 @@
+{
+  "name": "jpuskar-easy_ipa",
+  "version": "1.0.0",
+  "author": "jpuskar",
+  "summary": "Manages IPA servers and clients.",
+  "license": "Apache-2.0",
+  "source": "https://github.com/jpuskar/puppet-ipa",
+  "project_page": "https://github.com/jpuskar/puppet-ipa",
+  "issues_url": "https://github.com/jpuskar/puppet-ipa",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.13.0 < 5.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [ "7" ]
+    }
+  ]
+}

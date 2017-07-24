@@ -1,0 +1,6 @@
+rvm: 2.2
+notifications:
+  email:
+    - johnpuskar@gmail.com
+env:
+  - PUPPET_VERSION=4.3.2

@@ -1,0 +1,17 @@
+<VirtualHost _default_:<%= @proxy_https_port %>>
+  NSSEngine on
+  NSSCipherSuite +rsa_rc4_128_md5,+rsa_rc4_128_sha,+rsa_3des_sha,-rsa_des_sha,-rsa_rc4_40_md5,-rsa_rc2_40_md5,-rsa_null_md5,-rsa_null_sha,+fips_3des_sha,-fips_des_sha,-fortezza,-fortezza_rc4_128_sha,-fortezza_null,-rsa_des_56_sha,-rsa_rc4_56_sha,+rsa_aes_128_sha,+rsa_aes_256_sha
+  NSSProtocol TLSv1.0,TLSv1.1,TLSv1.2
+  NSSNickname Server-Cert
+  NSSCertificateDatabase /etc/httpd/alias
+
+  NSSProxyEngine On
+  NSSProxyCipherSuite +aes_128_sha_256,+aes_256_sha_256,+ecdhe_ecdsa_aes_128_gcm_sha_256,+ecdhe_ecdsa_aes_128_sha,+ecdhe_ecdsa_aes_256_gcm_sha_384,+ecdhe_ecdsa_aes_256_sha,+ecdhe_rsa_aes_128_gcm_sha_256,+ecdhe_rsa_aes_128_sha,+ecdhe_rsa_aes_256_gcm_sha_384,+ecdhe_rsa_aes_256_sha,+rsa_aes_128_gcm_sha_256,+rsa_aes_128_sha,+rsa_aes_256_gcm_sha_384,+rsa_aes_256_sha
+  ProxyRequests Off
+  ServerName <%= @proxy_server_name %>
+
+  ProxyPass / https://<%= @proxy_server_internal_fqdn %>/
+  ProxyPassReverse / https://<%= @proxy_server_internal_fqdn %>/
+  ProxyPassReverse / http://<%= @proxy_server_internal_fqdn %>/
+  ProxyPassReverseCookieDomain <%= @proxy_server_internal_fqdn %> <%= @proxy_server_external_fqdn %>
+</VirtualHost>
