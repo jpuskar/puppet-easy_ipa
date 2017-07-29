@@ -6,6 +6,7 @@
 # ----------
 # `domain`
 #      (string) The name of the IPA domain to create or join.
+#
 # `ipa_role`
 #      (string) What role the node will be. Options are 'master', 'replica', and 'client'.
 #
@@ -138,7 +139,6 @@
 #
 # TODO: Allow creation of root zone for isolated networks -- https://www.freeipa.org/page/Howto/DNS_in_isolated_networks
 # TODO: Class comments.
-# TODO: Dependencies and metadata updates.
 # TODO: Variable scope and passing.
 # TODO: Params.pp.
 # TODO: configurable admin username.

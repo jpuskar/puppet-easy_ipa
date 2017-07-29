@@ -47,7 +47,11 @@ puppet apply --modulepath '/tmp/modules:/etc/puppetlabs/code/environments/produc
     webui_disable_kerberos => true,\
     webui_enable_proxy => true,\
     webui_force_https => true,\
-}"
+  }"
+puppet apply --modulepath '/tmp/modules:/etc/puppetlabs/code/environments/production/modules' -e "\
+  easy_ipa::dns::reverse_zone {'192.168.44.0/24':\
+    ensure => present,\
+  }"
 SCRIPT
 
         box.vm.provision "shell", inline: $script
@@ -106,8 +110,6 @@ puppet apply --modulepath '/tmp/modules:/etc/puppetlabs/code/environments/produc
   }"
 
 SCRIPT
-
-#     admin_password => 'vagrant123',\
 
         box.vm.provision "shell", inline: $script
     end

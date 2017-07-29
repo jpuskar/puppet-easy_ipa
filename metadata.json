@@ -1,6 +1,6 @@
 {
   "name": "jpuskar-easy_ipa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "jpuskar",
   "summary": "Manages IPA servers and clients.",
   "license": "Apache-2.0",
