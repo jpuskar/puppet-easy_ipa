@@ -191,6 +191,21 @@ class easy_ipa (
   Boolean       $webui_force_https                  = false,
   String        $webui_proxy_external_fqdn          = 'localhost',
   String        $webui_proxy_https_port             = '8440',
+  Boolean       $server_role_adtrustcontroller      = false,
+  Boolean       $server_role_adtrustagent           = false,
+  Boolean       $server_role_ca                     = false,
+  [Optional]String        $ad_netbios_name                    = undef,
+  [Optional]String        $ad_domain_name                     = undef,
+  [Optional]String        $ad_admin_name                      = undef,
+  [Optional]String        $ad_admin_password                  = undef,
+  String        $package_trust_ad_role              =$::osfamily ? {
+    'Debian' => 'freeipa-server-trust-ad',
+    default  => 'ipa-server-trust-ad',
+  },
+  String        $package_trust_ad_agent_role        =$::osfamily ? {
+    'Debian' => 'winbind samba4-client',
+    default  => 'samba4-winbind-clients  samba4-client',
+  },
 ) {
 
   if $facts['kernel'] != 'Linux' or $facts['osfamily'] == 'Windows' {

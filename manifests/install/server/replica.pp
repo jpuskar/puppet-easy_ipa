@@ -35,5 +35,4 @@ class easy_ipa::install::server::replica {
     minute  => '*/1',
     require => Package[$easy_ipa::kstart_package_name],
   }
-
 }
