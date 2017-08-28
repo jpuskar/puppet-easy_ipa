@@ -68,23 +68,23 @@ class easy_ipa::install::server {
     contain 'easy_ipa::install::server::master'
     #install role AD trust controller
     if easy_ipa::server_role_adtrustcontroller {
-      -> contain 'easy_ipa::install::server::role::adtrustcontroller' 
+      contain 'easy_ipa::install::server::role::adtrustcontroller' 
     } 
     if easy_ipa::server_role_adtrustagent {
-      -> contain 'easy_ipa::install::server::role::adtrustagent'
+      contain 'easy_ipa::install::server::role::adtrustagent'
     }
   } elsif $easy_ipa::ipa_role == 'replica' {
     contain 'easy_ipa::install::server::replica'
     #install role AD trust controller
     if easy_ipa::server_role_adtrustcontroller {
-      -> contain 'easy_ipa::install::server::role::adtrustcontroller'  
+      contain 'easy_ipa::install::server::role::adtrustcontroller'  
     }
     if easy_ipa::server_role_adtrustagent {
-      -> contain 'easy_ipa::install::server::role::adtrustagent'
+      contain 'easy_ipa::install::server::role::adtrustagent'
     }
     #install role ca
     if easy_ipa::server_role_ca {
-      -> contain 'easy_ipa::install::server::role::ca'
+      contain 'easy_ipa::install::server::role::ca'
     }
   }
 
