@@ -204,7 +204,7 @@ class easy_ipa (
   },
   String        $package_trust_ad_agent_role        =$::osfamily ? {
     'Debian' => 'winbind samba4-client',
-    default  => 'samba4-winbind-clients  samba4-client',
+    default  => 'samba-winbind-clients  samba4-client',
   },
 ) {
 
