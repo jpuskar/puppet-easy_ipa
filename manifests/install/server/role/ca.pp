@@ -6,7 +6,7 @@ class easy_ipa::install::server::role::ca {
         command   => "/usr/sbin/ipa-ca-install  --password=${easy_ipa::directory_services_password}",
         timeout   => 0,
         logoutput => 'on_failure',
-        feature   => 'shell',
+        provider  => 'shell',
         onlyif    => "/usr/bin/ipa server-find --servrole='CA server' --name ${easy_ipa::ipa_server_fqdn} | grep -wq 0",
      }
   } 
