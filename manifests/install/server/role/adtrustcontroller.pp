@@ -3,6 +3,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
   
   #package
   package{$easy_ipa::package_trust_ad_role:
+    name   => $easy_ipa::package_trust_ad_role,
     ensure => present,
   }
   
