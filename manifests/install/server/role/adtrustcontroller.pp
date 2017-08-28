@@ -12,7 +12,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
         command   => "/usr/sbin/ipa-adtrust-install  --netbios-name=${easy_ipa::ad_netbios_name} --enable-compat",
         timeout   => 0,
         logoutput => 'on_failure',
-        feature   => 'shell',
+        provider  => 'shell',
         onlyif    => "/usr/bin/ipa server-find --servrole='AD Trust controller' --name ${easy_ipa::ipa_server_fqdn} | grep -wq 0",
       }
       -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_connection_to_AD":
@@ -26,7 +26,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
         command   => "/usr/sbin/ipa-adtrust-install  --netbios-name=${easy_ipa::ad_netbios_name} --enable-compat",
         timeout   => 0,
         logoutput => 'on_failure',
-        feature   => 'shell',
+        provider  => 'shell',
         onlyif    => "/usr/bin/ipa server-find --servrole='AD Trust controller' --name ${easy_ipa::ipa_server_fqdn} | grep -wq 0",
       }  
   }
