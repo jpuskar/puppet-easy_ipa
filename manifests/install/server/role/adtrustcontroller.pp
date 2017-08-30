@@ -10,7 +10,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
   #if server is a master you must configure the domain approbation before
   if $easy_ipa::ipa_role == 'master' {
      exec { "server_install_${easy_ipa::ipa_server_fqdn}_role_ad_trust_controller":
-        command   => "/usr/sbin/ipa-adtrust-install  --netbios-name=${easy_ipa::ad_netbios_name} --enable-compat",
+        command   => "/usr/sbin/ipa-adtrust-install --admin-name=${easy_ipa::admin_name} --admin-password=${easy_ipa::admin_password}  --netbios-name=${easy_ipa::ad_netbios_name} --enable-compat",
         timeout   => 0,
         logoutput => 'on_failure',
         #provider  => 'shell',
@@ -24,7 +24,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
     
   } elsif $easy_ipa::ipa_role == 'replica' {
       exec { "server_install_${easy_ipa::ipa_server_fqdn}_role_ad_trust_controller":
-        command   => "/usr/sbin/ipa-adtrust-install  --netbios-name=${easy_ipa::ad_netbios_name} --enable-compat",
+        command   => "/usr/sbin/ipa-adtrust-install --admin-name=${easy_ipa::admin_name} --admin-password=${easy_ipa::admin_password} --netbios-name=${easy_ipa::ad_netbios_name} --enable-compat",
         timeout   => 0,
         logoutput => 'on_failure',
         #provider  => 'shell',

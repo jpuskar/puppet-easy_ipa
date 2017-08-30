@@ -147,6 +147,7 @@ class easy_ipa (
   String        $domain,
   String        $ipa_role,
   String        $admin_password                     = '',
+  String        $admin_name                         = 'admin',
   String        $directory_services_password        = '',
   String        $autofs_package_name                = 'autofs',
   Boolean       $client_install_ldaputils           = false,
