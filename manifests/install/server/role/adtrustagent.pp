@@ -2,7 +2,6 @@
 class easy_ipa::install::server::role::adtrustagent {
   #package
   package{$easy_ipa::package_trust_ad_agent_role:
-    name   => $easy_ipa::package_trust_ad_agent_role,
     ensure => installed,
   } 
   -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_role_ad_trust_agent":
