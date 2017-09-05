@@ -4,9 +4,11 @@ class easy_ipa::install::server {
   package{$easy_ipa::ipa_server_package_name:
     ensure => present,
   }
-
-  package{$easy_ipa::kstart_package_name:
-    ensure => present,
+  # update to take option install_kstart
+  if $easy_ipa::install_kstart {
+    package{$easy_ipa::kstart_package_name:
+      ensure => present,
+    }
   }
 
   if $easy_ipa::server_install_ldaputils {

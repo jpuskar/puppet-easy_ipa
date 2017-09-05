@@ -15,6 +15,14 @@ class easy_ipa::install::server::master {
   ${easy_ipa::install::server::server_install_cmd_opts_no_ui_redirect} \
   --unattended"
 
+  # update to take option install_kstart
+  if $easy_ipa::install_kstart {
+    $command = '/usr/bin/k5start'
+  }
+  else{
+    $command = '/usr/bin/kinit'
+  }
+  
   file { '/etc/ipa/primary':
     ensure  => 'file',
     content => 'Added by IPA Puppet module. Designates primary master. Do not remove.',
@@ -29,10 +37,8 @@ class easy_ipa::install::server::master {
     before    => Service['sssd'],
   }
   -> cron { 'k5start_root': #allows scp to replicas as root
-    command => '/usr/bin/k5start -f /etc/krb5.keytab -U -o root -k /tmp/krb5cc_0 > /dev/null 2>&1',
+    command => "${command} -f /etc/krb5.keytab -U -o root -k /tmp/krb5cc_0 > /dev/null 2>&1",
     user    => 'root',
     minute  => '*/1',
-    require => Package[$easy_ipa::kstart_package_name],
   }
-
 }
