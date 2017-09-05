@@ -61,9 +61,9 @@ class easy_ipa::install::server {
   }
 
   if $easy_ipa::no_ui_redirect {
-    $server_install_cmd_opts_no_ui_redirect = ''
-  } else {
     $server_install_cmd_opts_no_ui_redirect = '--no-ui-redirect'
+  } else {
+    $server_install_cmd_opts_no_ui_redirect = ''
   }
 
   if $easy_ipa::ipa_role == 'master' {
