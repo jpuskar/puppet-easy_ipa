@@ -10,7 +10,8 @@ class easy_ipa::install::server::role::adtrustcontroller {
     ensure => installed,
   }
   
-  $questions ="\"Active Directory domain administrator\'s password: \""
+  $questions ="\"Active Directory domain administrator's password: \""
+  $command = "/usr/bin/ipa trust-add  --type=ad ${easy_ipa::ad_domain_name} --admin=${easy_ipa::ad_admin_name} --password"
   
   #if server is a master you must configure the domain approbation before
   if $easy_ipa::ipa_role == 'master' {
@@ -22,7 +23,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
         unless    => "/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa trustconfig-show | grep -wqF ${easy_ipa::ipa_server_fqdn}",
       }
       -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_connection_to_AD":
-        command   => "/usr/bin/echo '#!/usr/bin/expect -f \r spawn /usr/bin/ipa trust-add  --type=ad ${easy_ipa::ad_domain_name} --admin=${easy_ipa::ad_admin_name} --password \r expect $questions { send ${easy_ipa::ad_admin_password}\r' >/tmp/reg_ad.sh;/usr/bin/chmod 755 /tmp/reg_ad.sh; }",
+        command   => "/usr/bin/echo '#!/usr/bin/expect -f \r spawn $command \r expect $questions { send ${easy_ipa::ad_admin_password}\r' >/tmp/reg_ad.sh;/usr/bin/chmod 755 /tmp/reg_ad.sh; }",
         timeout   => 0,
         require   => Package['expect'],
         logoutput => 'on_failure',
