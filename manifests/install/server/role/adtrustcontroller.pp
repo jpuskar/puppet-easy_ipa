@@ -19,7 +19,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
       -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_connection_to_AD":
         command   => "/usr/bin/ipa trust-add  --type= ad ${easy_ipa::ad_domain_name} --admin=${easy_ipa::ad_admin_name} --password",
         timeout   => 0,
-         before   => Package['expect'],
+         before   => Package['expect.x86_64'],
         logoutput => 'on_failure',
       }     
     
