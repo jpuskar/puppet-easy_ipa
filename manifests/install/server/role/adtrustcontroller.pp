@@ -23,7 +23,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
         unless    => "/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa trustconfig-show | grep -wqF ${easy_ipa::ipa_server_fqdn}",
       }
       -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_connection_to_AD":
-        command   => "/usr/bin/echo -e '#!/usr/bin/expect -f \r ' > /tmp/reg_ad.sh;/usr/bin/chmod 755 /tmp/reg_ad.sh;",
+        command   => "/usr/bin/echo -e '#!/usr/bin/expect -f \n spawn ${command} \r' > /tmp/reg_ad.sh;/usr/bin/chmod 755 /tmp/reg_ad.sh;",
         timeout   => 0,
         require   => Package['expect'],
         logoutput => 'on_failure',
