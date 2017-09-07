@@ -9,13 +9,12 @@ class easy_ipa::install::server::role::adtrustcontroller {
   
   #if server is a master you must configure the domain approbation before
   if $easy_ipa::ipa_role == 'master' {
-    notify { 'step 1':}
      exec { "server_install_${easy_ipa::ipa_server_fqdn}_role_ad_trust_controller":
         command   => "/usr/sbin/ipa-adtrust-install --admin-name=${easy_ipa::admin_name} --admin-password=${easy_ipa::admin_password}  --netbios-name=${easy_ipa::ad_netbios_name} --enable-compat --unattended",
         timeout   => 0,
         logoutput => 'on_failure',
         provider  => 'shell',
-        onlyif    => "/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa trustconfig-show | grep -wqF ${easy_ipa::ipa_server_fqdn}",
+        onlyif    => " notify { 'step 1':};/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa trustconfig-show | grep -wqF ${easy_ipa::ipa_server_fqdn}",
       }
        notify { 'step 2':}
       -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_connection_to_AD":
