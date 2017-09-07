@@ -22,6 +22,13 @@ class easy_ipa::install::server::master {
   else{
     $command = '/usr/bin/kinit -t /etc/krb5.keytab'
   }
+  # update to use cron for kinit or k5start
+  if $easy_ipa::use_cron {
+    $cron = 'present'
+  }
+  else{
+    $cron = 'absent'
+  }
   
   file { '/etc/ipa/primary':
     ensure  => 'file',
@@ -41,5 +48,6 @@ class easy_ipa::install::server::master {
     command => "${command}",
     user    => 'root',
     minute  => '*/1',
+    ensure  => $cron,
   }
 }

@@ -14,12 +14,15 @@ class easy_ipa::install::server::role::adtrustcontroller {
         timeout   => 0,
         logoutput => 'on_failure',
         provider  => 'shell',
-        unless    => " echo 'step1'>/tmp/debug;/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa trustconfig-show | grep -wqF ${easy_ipa::ipa_server_fqdn}",
+        unless    => "/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa trustconfig-show | grep -wqF ${easy_ipa::ipa_server_fqdn}",
       }
-       notify { 'step 2':}
       -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_connection_to_AD":
-        command   => "/usr/bin/ipa trust-add  --type= ad ${easy_ipa::ad_domain_name} --admin=${easy_ipa::ad_admin_name} --password=${easy_ipa::ad_admin_password}",
+        command   => "/usr/bin/ipa trust-add  --type= ad ${easy_ipa::ad_domain_name} --admin=${easy_ipa::ad_admin_name} --password",
         timeout   => 0,
+         before   => package{ 'expect': 
+           name   => 'expect',
+           ensure => installed,
+           },
         logoutput => 'on_failure',
       }     
     

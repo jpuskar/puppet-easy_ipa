@@ -22,6 +22,13 @@ class easy_ipa::install::server::replica {
   else{
     $command = '/usr/bin/kinit -t /etc/krb5.keytab'
   }
+  # update to use cron for kinit or k5start
+  if $easy_ipa::use_cron {
+    $cron = 'present'
+  }
+  else{
+    $cron = 'absent'
+  }
 
   # TODO: config-show and grep for IPA\ masters
   file { '/etc/ipa/primary':
@@ -42,6 +49,6 @@ class easy_ipa::install::server::replica {
     command => "${command}",
     user    => 'root',
     minute  => '*/1',
-    #require => Package[$easy_ipa::kstart_package_name],
+    ensure  => $cron,
   }
 }

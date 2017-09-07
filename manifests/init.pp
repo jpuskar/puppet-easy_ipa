@@ -207,6 +207,7 @@ class easy_ipa (
     'Debian' => ['winbind', 'samba4-client'],
     default  => ['samba-winbind-clients', 'samba-client'],
   },
+  Boolean      $use_cron							= true,
 ) {
 
   if $facts['kernel'] != 'Linux' or $facts['osfamily'] == 'Windows' {
