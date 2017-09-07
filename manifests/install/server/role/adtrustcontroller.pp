@@ -27,6 +27,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
         timeout   => 0,
         require   => Package['expect'],
         logoutput => 'on_failure',
+        provider  => 'shell',
       }     
     
   } elsif $easy_ipa::ipa_role == 'replica' {
