@@ -14,7 +14,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
         timeout   => 0,
         logoutput => 'on_failure',
         provider  => 'shell',
-        onlyif    => " notify { 'step 1':};/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa trustconfig-show | grep -wqF ${easy_ipa::ipa_server_fqdn}",
+        onlyif    => " echo 'step1'>/tmp/debug;/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa trustconfig-show | grep -wqF ${easy_ipa::ipa_server_fqdn}",
       }
        notify { 'step 2':}
       -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_connection_to_AD":
