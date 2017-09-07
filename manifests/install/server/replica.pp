@@ -17,10 +17,10 @@ class easy_ipa::install::server::replica {
   
   # update to take option install_kstart
   if $easy_ipa::install_kstart {
-    $command = '/usr/bin/k5start'
+    $command = '/usr/bin/k5start -f /etc/krb5.keytab -U -o root -k /tmp/krb5cc_0 > /dev/null 2>&1'
   }
   else{
-    $command = '/usr/bin/kinit'
+    $command = '/usr/bin/kinit -t /etc/krb5.keytab'
   }
 
   # TODO: config-show and grep for IPA\ masters
@@ -36,9 +36,10 @@ class easy_ipa::install::server::replica {
     logoutput => 'on_failure',
     notify    => Easy_ipa::Helpers::Flushcache["server_${easy_ipa::ipa_server_fqdn}"],
     before    => Service['sssd'],
+    onlyif    => "${command};/usr/sbin/ipa-replica-manage list | grep -wqF ${easy_ipa::ipa_server_fqdn}",
   }
   -> cron { 'k5start_root':
-    command => "${command} -f /etc/krb5.keytab -U -o root -k /tmp/krb5cc_0 > /dev/null 2>&1",
+    command => "${command}",
     user    => 'root',
     minute  => '*/1',
     #require => Package[$easy_ipa::kstart_package_name],

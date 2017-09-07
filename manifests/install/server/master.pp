@@ -17,10 +17,10 @@ class easy_ipa::install::server::master {
 
   # update to take option install_kstart
   if $easy_ipa::install_kstart {
-    $command = '/usr/bin/k5start'
+    $command = '/usr/bin/k5start -f /etc/krb5.keytab -U -o root -k /tmp/krb5cc_0 > /dev/null 2>&1'
   }
   else{
-    $command = '/usr/bin/kinit'
+    $command = 'kinit -t /etc/krb5.keytab'
   }
   
   file { '/etc/ipa/primary':
@@ -35,9 +35,10 @@ class easy_ipa::install::server::master {
     logoutput => 'on_failure',
     notify    => Easy_ipa::Helpers::Flushcache["server_${easy_ipa::ipa_server_fqdn}"],
     before    => Service['sssd'],
+    onlyif    => "${command};/usr/bin/ipa server-find --servrole 'CA server' | grep -wqF  ${easy_ipa::ipa_server_fqdn}",
   }
   -> cron { 'k5start_root': #allows scp to replicas as root
-    command => "${command} -f /etc/krb5.keytab -U -o root -k /tmp/krb5cc_0 > /dev/null 2>&1",
+    command => "${command}",
     user    => 'root',
     minute  => '*/1',
   }

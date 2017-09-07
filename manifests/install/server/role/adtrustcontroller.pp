@@ -14,7 +14,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
         timeout   => 0,
         logoutput => 'on_failure',
         provider  => 'shell',
-        onlyif    => "/usr/bin/ipa trustconfig-show | grep -wqF shell_escape(${easy_ipa::ipa_server_fqdn})",
+        onlyif    => "/usr/bin/kinit  -t /etc/krb5.keytab;/usr/bin/ipa trustconfig-show | grep -wqF ${easy_ipa::ipa_server_fqdn}",
       }
       -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_connection_to_AD":
         command   => "/usr/bin/ipa trust-add  --type= ad ${easy_ipa::ad_domain_name} --admin=${easy_ipa::ad_admin_name} --password=${easy_ipa::ad_admin_password}",
