@@ -6,6 +6,9 @@ class easy_ipa::install::server::role::adtrustcontroller {
     name   => $easy_ipa::package_trust_ad_role,
     ensure => installed,
   }
+  package{'expect':
+    ensure => installed,
+  }
   
   #if server is a master you must configure the domain approbation before
   if $easy_ipa::ipa_role == 'master' {
@@ -19,7 +22,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
       -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_connection_to_AD":
         command   => "/usr/bin/ipa trust-add  --type= ad ${easy_ipa::ad_domain_name} --admin=${easy_ipa::ad_admin_name} --password",
         timeout   => 0,
-         before   => Package['expect.x86_64'],
+        require   => Package['expect'],
         logoutput => 'on_failure',
       }     
     
