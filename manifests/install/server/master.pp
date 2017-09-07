@@ -20,7 +20,7 @@ class easy_ipa::install::server::master {
     $command = '/usr/bin/k5start -f /etc/krb5.keytab -U -o root -k /tmp/krb5cc_0 > /dev/null 2>&1'
   }
   else{
-    $command = 'kinit -t /etc/krb5.keytab'
+    $command = '/usr/bin/kinit -t /etc/krb5.keytab'
   }
   
   file { '/etc/ipa/primary':
