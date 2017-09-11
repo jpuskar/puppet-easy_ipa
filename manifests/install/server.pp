@@ -69,10 +69,10 @@ class easy_ipa::install::server {
   if $easy_ipa::ipa_role == 'master' {
     contain 'easy_ipa::install::server::master'
     #install role AD trust controller
-    if easy_ipa::server_role_adtrustcontroller {
+    -> if easy_ipa::server_role_adtrustcontroller {
       contain 'easy_ipa::install::server::role::adtrustcontroller' 
     } 
-    if easy_ipa::server_role_adtrustagent {
+    -> if easy_ipa::server_role_adtrustagent {
       contain 'easy_ipa::install::server::role::adtrustagent'
     }
   } elsif $easy_ipa::ipa_role == 'replica' {

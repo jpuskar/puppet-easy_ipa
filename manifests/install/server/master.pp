@@ -42,7 +42,7 @@ class easy_ipa::install::server::master {
     logoutput => 'on_failure',
     notify    => Easy_ipa::Helpers::Flushcache["server_${easy_ipa::ipa_server_fqdn}"],
     before    => Service['sssd'],
-    onlyif    => "${command};/usr/bin/ipa server-find --servrole 'CA server' | grep -wqF  ${easy_ipa::ipa_server_fqdn}",
+    #unless    => "${command};/usr/bin/ipa server-find --servrole 'CA server' | grep -wqF  ${easy_ipa::ipa_server_fqdn}",
   }
   -> cron { 'k5start_root': #allows scp to replicas as root
     command => "${command}",
