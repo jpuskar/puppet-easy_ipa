@@ -28,6 +28,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
         timeout   => 0,
         require   => Package['expect'],
         logoutput => 'on_failure',
+        unless    => "/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa trust-find | grep -wqiF  ${easy_ipa::ad_domain_name}"
       }     
     
   } elsif $easy_ipa::ipa_role == 'replica' {
