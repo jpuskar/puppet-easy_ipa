@@ -24,7 +24,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
         onlyif    => "/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa server-find --servrole 'CA server' | grep -wqF  ${easy_ipa::ipa_server_fqdn}"
       }
       -> exec { "server_install_${easy_ipa::ipa_server_fqdn}_connection_to_AD":
-        command   => "/usr/bin/echo ${easy_ipa::ad_admin_password} | /usr/bin/ipa trust-add  --type=ad ${easy_ipa::ad_domain_name} --admin=${easy_ipa::ad_admin_name} --password",
+        command   => "/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/echo ${easy_ipa::ad_admin_password} | /usr/bin/ipa trust-add  --type=ad ${easy_ipa::ad_domain_name} --admin=${easy_ipa::ad_admin_name} --password",
         timeout   => 0,
         require   => Package['expect'],
         logoutput => 'on_failure',
