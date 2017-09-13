@@ -5,8 +5,11 @@ class easy_ipa::install::client {
     ensure => present,
   }
 
-  package{$easy_ipa::kstart_package_name:
-    ensure => present,
+   # update to take option install_kstart
+  if $easy_ipa::install_kstart {
+    package{$easy_ipa::kstart_package_name:
+      ensure => present,
+    }
   }
 
   if $easy_ipa::client_install_ldaputils {
