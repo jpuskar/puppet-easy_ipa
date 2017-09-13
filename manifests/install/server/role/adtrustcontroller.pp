@@ -35,7 +35,6 @@ class easy_ipa::install::server::role::adtrustcontroller {
         logoutput => 'on_failure',
         provider  => 'shell',
         unless    => "/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa trustconfig-show | grep -wqF ${easy_ipa::ipa_server_fqdn}",
-        #onlyif    => "/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa server-find --servrole 'AD trust controller' | grep -wqF  ${easy_ipa::ipa_server_fqdn}"
       }  
   }
 }
