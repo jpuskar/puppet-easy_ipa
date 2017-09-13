@@ -208,6 +208,11 @@ class easy_ipa (
     default  => ['samba-winbind-clients', 'samba-client'],
   },
   Boolean      $use_cron							= true,
+  Array[String] $package_client_ad                  =$::osfamily ? {
+    'Debian' => [],
+    default  => ['sssd', 'sssd-ipa', 'sssd-ad', 'sssd-krb5', 'sssd-ldap'],
+  },
+  Boolean      $package_client_ad_option            = false,
 ) {
 
   if $facts['kernel'] != 'Linux' or $facts['osfamily'] == 'Windows' {

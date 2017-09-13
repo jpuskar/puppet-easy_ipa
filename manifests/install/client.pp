@@ -11,6 +11,13 @@ class easy_ipa::install::client {
       ensure => present,
     }
   }
+  # package client additional
+  if $easy_ipa::package_client_ad_optional {
+    package{$easy_ipa::package_trust_ad_role:
+      name   => $easy_ipa::package_trust_ad_role,
+      ensure => installed,
+    }
+  }
 
   if $easy_ipa::client_install_ldaputils {
     package { $easy_ipa::ldaputils_package_name:
