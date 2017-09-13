@@ -9,10 +9,7 @@ class easy_ipa::install::server::role::adtrustcontroller {
   package{'expect':
     ensure => installed,
   }
-  
-  $questions ="\u0022Active Directory domain administrator\u0027s password: \u0022"
-  $command = "/usr/bin/ipa trust-add  --type=ad ${easy_ipa::ad_domain_name} --admin=${easy_ipa::ad_admin_name} --password"
-  
+    
   #if server is a master you must configure the domain approbation before
   if $easy_ipa::ipa_role == 'master' {
      exec { "server_install_${easy_ipa::ipa_server_fqdn}_role_ad_trust_controller":
