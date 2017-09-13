@@ -7,7 +7,7 @@ class easy_ipa::install::server::role::ca {
         timeout   => 0,
         logoutput => 'on_failure',
         provider  => 'shell',
-        onlyif    => "/usr/bin/ipa server-find --servrole='CA server' --name shell_escape(${easy_ipa::ipa_server_fqdn}) | grep -wqF shell_escape(${easy_ipa::ipa_server_fqdn})",
+        unless    => "/usr/bin/kinit -t /etc/krb5.keytab;/usr/bin/ipa server-find --servrole='CA server' --name shell_escape(${easy_ipa::ipa_server_fqdn}) | grep -wqF shell_escape(${easy_ipa::ipa_server_fqdn})",
      }
   } 
 }
