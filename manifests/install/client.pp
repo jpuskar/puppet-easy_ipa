@@ -14,7 +14,7 @@ class easy_ipa::install::client {
   # package client additional
   if $easy_ipa::package_client_ad_option {
     package{$easy_ipa::package_client_ad :
-      name   => $easy_ipa::package_client_ad,
+      #name   => $easy_ipa::package_client_ad,
       ensure => installed,
     }
   }
