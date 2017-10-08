@@ -52,7 +52,7 @@ class easy_ipa::config::webui {
       print \$cf_ipa/If
       EOF
       );
-      echo \$RES | grep HTTP_HOST;
+      echo $RES | grep HTTP_HOST;
       | END_ONLYIF_DISABLE_IPA_WEBUI_KERBEROS
 
     $cmd_disable_ipa_webui_kerberos = @(END_CMD_DISABLE_IPA_WEBUI_KERBEROS)
