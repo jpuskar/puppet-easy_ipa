@@ -43,20 +43,38 @@ class easy_ipa::config::webui {
   }
 
   if $easy_ipa::webui_disable_kerberos {
-    file_line{'disable_kerberos_via_if_1':
-      ensure => present,
-      path   => '/etc/httpd/conf.d/ipa.conf',
-      line   => "  <If \"%{HTTP_HOST} != '${proxy_server_external_fqdn_and_port}'\">",
-      notify => Service['httpd'],
-      after  => '<Location\ "/ipa">',
+
+    $onlyif_disable_ipa_webui_kerberos = @(END_ONLYIF_DISABLE_IPA_WEBUI_KERBEROS)
+      set -eou pipefail;
+      RES=$(/opt/puppetlabs/puppet/bin/augtool << EOF
+      defvar cf '/files/etc/httpd/conf.d/ipa.conf'
+      defvar cf_ipa "\$cf/Location[arg='\"/ipa\"']"
+      print \$cf_ipa/If
+      EOF
+      );
+      echo \$RES | grep HTTP_HOST;
+      | END_ONLYIF_DISABLE_IPA_WEBUI_KERBEROS
+
+    $cmd_disable_ipa_webui_kerberos = @(END_CMD_DISABLE_IPA_WEBUI_KERBEROS)
+      /opt/puppetlabs/puppet/bin/augtool -b << EOF
+      defvar cf '/files/etc/httpd/conf.d/ipa.conf'
+      defvar cf_ipa "\$cf/Location[arg='\"/ipa\"']"
+      cp \$cf_ipa \$cf/If
+      mv \$cf/If \$cf_ipa/If
+      set \$cf_ipa/If/arg "\"%{HTTP_HOST} != 'localhost:8440'\""
+      rm \$cf_ipa/*[self::directive =~ regexp("^Gss.*")]
+      rm \$cf_ipa/*[self::directive =~ regexp("^Auth.*")]
+      rm \$cf_ipa/*[self::directive =~ regexp("^Require.*")]
+      save
+      EOF
+      | END_CMD_DISABLE_IPA_WEBUI_KERBEROS
+
+    exec { 'disable_ipa_webui_kerberos':
+      command  => $cmd_disable_ipa_webui_kerberos,
+      unless   => $onlyif_disable_ipa_webui_kerberos,
+      provider => 'shell',
+      notify   => Service['httpd'],
     }
 
-    file_line{'disable_kerberos_via_if_2':
-      ensure => present,
-      path   => '/etc/httpd/conf.d/ipa.conf',
-      line   => '  </If>',
-      notify => Service['httpd'],
-      after  => 'ErrorDocument\ 401\ /ipa/errors/unauthorized.html',
-    }
   }
 }
