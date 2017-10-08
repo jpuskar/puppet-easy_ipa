@@ -19,16 +19,36 @@ class easy_ipa::install::server::master {
     ensure  => 'file',
     content => 'Added by IPA Puppet module. Designates primary master. Do not remove.',
   }
-  -> exec { "server_install_${easy_ipa::ipa_server_fqdn}":
+
+  exec { "server_install_${easy_ipa::ipa_server_fqdn}":
     command   => $server_install_cmd,
     timeout   => 0,
-    unless    => '/usr/sbin/ipactl status >/dev/null 2>&1',
+    unless    => '/usr/sbin/ipactl status > /dev/null 2>&1',
     creates   => '/etc/ipa/default.conf',
     logoutput => 'on_failure',
     notify    => Easy_ipa::Helpers::Flushcache["server_${easy_ipa::ipa_server_fqdn}"],
-    before    => Service['sssd'],
+    before    => [
+      Service['sssd'],
+      Cron['k5start_root'],
+    ],
+    require   => File['/etc/ipa/primary'],
   }
-  -> cron { 'k5start_root': #allows scp to replicas as root
+
+  exec { "server_configure_${easy_ipa::ipa_server_fqdn}":
+    command   => $server_install_cmd,
+    timeout   => 0,
+    onlyif    => '/usr/sbin/ipactl status 2>&1 | grep IPA\\ is\\ not\\ configured',
+    logoutput => 'on_failure',
+    notify    => Easy_ipa::Helpers::Flushcache["server_${easy_ipa::ipa_server_fqdn}"],
+    before    => [
+      Service['sssd'],
+      Cron['k5start_root'],
+      Service['ipa'],
+    ],
+    require   => File['/etc/ipa/primary'],
+  }
+
+  cron { 'k5start_root': #allows scp to replicas as root
     command => '/usr/bin/k5start -f /etc/krb5.keytab -U -o root -k /tmp/krb5cc_0 > /dev/null 2>&1',
     user    => 'root',
     minute  => '*/1',
