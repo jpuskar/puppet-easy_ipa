@@ -11,6 +11,7 @@ Vagrant.configure("2") do |config|
             vb.customize ["modifyvm", :id, "--natnet1", "172.31.9/24"]
             vb.gui = false
             vb.memory = 4096
+            vb.cpus = 2
             vb.customize ["modifyvm", :id, "--ioapic", "on"]
             vb.customize ["modifyvm", :id, "--hpet", "on"]
         end

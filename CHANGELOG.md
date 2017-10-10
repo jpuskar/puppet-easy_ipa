@@ -1,6 +1,9 @@
 
 # puppet-easy_ipa
 
+## 1.0.5
+- Added zone_forwarder resource.
+
 ## 1.0.4
 - Fixed anouther WebUI lgin problem (unless param).
 
